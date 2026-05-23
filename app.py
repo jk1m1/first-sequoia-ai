@@ -210,7 +210,7 @@ FILING TEXT:
 """
 
     # Try primary model, fall back to smaller model if rate limited
-    for model in ["llama-3.1-8b-instant", "llama3-8b-8192", "mixtral-8x7b-32768"]:
+    for model in ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "gemma2-9b-it"]:
         try:
             response = client.chat.completions.create(
                 model=model,
@@ -221,7 +221,7 @@ FILING TEXT:
             return response.choices[0].message.content
         except Exception as e:
             err = str(e).lower()
-            if "rate" in err or "limit" in err or "capacity" in err:
+            if any(x in err for x in ["rate", "limit", "capacity", "decommission", "deprecated", "not supported"]):
                 continue  # try next model
             raise  # re-raise if it's a different error
     raise Exception("All models failed — try again in a minute.")
