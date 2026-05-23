@@ -147,7 +147,7 @@ def fetch_filings(cik: str, form: str, count: int = 6):
     return results
 
 
-def fetch_filing_text(cik: str, acc_clean: str, document: str, max_chars: int = 50000) -> str | None:
+def fetch_filing_text(cik: str, acc_clean: str, document: str, max_chars: int = 20000) -> str | None:
     """Download and clean filing text from EDGAR."""
     cik_int = int(cik)
     url = f"https://www.sec.gov/Archives/edgar/data/{cik_int}/{acc_clean}/{document}"
@@ -209,13 +209,22 @@ FILING TEXT:
 {text}
 """
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.2,
-        max_tokens=2048,
-    )
-    return response.choices[0].message.content
+    # Try primary model, fall back to smaller model if rate limited
+    for model in ["llama-3.1-8b-instant", "llama3-8b-8192", "mixtral-8x7b-32768"]:
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.2,
+                max_tokens=2048,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            err = str(e).lower()
+            if "rate" in err or "limit" in err or "capacity" in err:
+                continue  # try next model
+            raise  # re-raise if it's a different error
+    raise Exception("All models failed — try again in a minute.")
 
 
 # ============================================================
