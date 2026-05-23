@@ -1,0 +1,33 @@
+# ============================================================
+# First Sequoia Financial — Auth Config
+# ============================================================
+# IMPORTANT: Never commit this file to a public GitHub repo.
+# Add config.yaml to your .gitignore.
+#
+# To change passwords:
+#   1. Edit the plaintext passwords in generate_passwords.py
+#   2. Run: python generate_passwords.py
+#   3. Paste the output hashes below, replacing the existing ones.
+# ============================================================
+
+credentials:
+  usernames:
+    eric:
+      email: info@firstseq.com
+      name: Eric Hon
+      # Password: FirstSequoiaFinancial
+      password: "$2b$12$xw6jQgT.fgE40UmXHYsGB.84h2yyQsXRp8WW1ZoL9mzrzhtxkcjRi"
+    intern:
+      email: intern@firstseq.com
+      name: Intern
+      # Password: FirstSequoiaFinancial
+      password: "$2b$12$M7ccLoX/SXXLr9r58OvaFedNTWaIvuU25JqjwthDzKGPSjjl05bEq"
+
+cookie:
+  # Change this to a long random string before deploying — keep it secret
+  key: "change_this_to_a_long_random_secret_string_before_deploying"
+  name: "first_sequoia_auth_cookie"
+  expiry_days: 30
+
+preauthorized:
+  emails: []

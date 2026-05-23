@@ -1,0 +1,23 @@
+# ============================================================
+# CRITICAL: These files contain secrets — never push to GitHub
+# ============================================================
+.env
+*.env
+secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit local secrets (use Streamlit Cloud secrets UI instead)
+.streamlit/secrets.toml
